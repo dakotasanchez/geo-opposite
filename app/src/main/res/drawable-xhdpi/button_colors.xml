@@ -3,9 +3,6 @@
     <item android:state_pressed="true" >
         <shape>
             <solid
-                android:color="@color/button_blue" />
-            <stroke
-                android:width="2dp"
                 android:color="@android:color/white" />
             <corners
                 android:radius="8dp" />
@@ -20,10 +17,8 @@
 
     <item>
         <shape>
-            <gradient
-                android:startColor="@color/opaque_white"
-                android:endColor="@color/opaque_white"
-                android:angle="270" />
+            <solid
+                android:color="@color/opaque_white" />
             <corners
                 android:radius="8dp" />
             <padding

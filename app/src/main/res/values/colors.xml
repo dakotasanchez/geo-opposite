@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="button_blue">#1E669B</color>
-    <color name="opaque_white">#80FFFFFF</color>
+    <color name="app_blue">#1E669B</color>
+    <color name="opaque_white">#AFFFFFFF</color>
 
 </resources>

@@ -2,43 +2,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="@android:color/black"
     tools:context=".MainActivity$PlaceholderFragment">
 
-    <RelativeLayout
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="0px"
-        android:layout_weight="7"
-        android:gravity="center"
-        android:background="@drawable/blue_marble">
-
-        </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:padding="8dp"
+        android:textColor="@android:color/white"
+        android:textSize="24dp"
+        android:text="@string/pick"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="0px"
-        android:layout_weight="3"
-        android:padding="@dimen/activity_vertical_margin"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/blue_marble">
 
-        <Button
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_colors"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"
-            android:layout_margin="8dp"
-            android:text="@string/my_location"/>
+            android:padding="@dimen/activity_vertical_margin"
+            android:orientation="horizontal">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_colors"
-            android:layout_margin="8dp"
-            android:text="@string/other_location"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_colors"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:layout_margin="8dp"
+                android:text="@string/my_location"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_colors"
+                android:layout_margin="8dp"
+                android:text="@string/other_location"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
