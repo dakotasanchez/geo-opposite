@@ -20,6 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".OtherLocationActivity"
+            android:label="@string/title_activity_other_location" >
+        </activity>
     </application>
 
 </manifest>
