@@ -40,7 +40,7 @@
             android:text="@string/my_location"/>
 
         <Button
-            android:id="@+id/"
+            android:id="@+id/other_location_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_colors"
