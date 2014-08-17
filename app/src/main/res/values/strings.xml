@@ -11,5 +11,7 @@
     <string name="city">City</string>
     <string name="or">OR</string>
     <string name="coordinates">Coordinates</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
 
 </resources>
