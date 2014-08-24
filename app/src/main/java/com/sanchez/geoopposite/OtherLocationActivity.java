@@ -1,6 +1,8 @@
 package com.sanchez.geoopposite;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,9 +14,19 @@ public class OtherLocationActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_location);
+
+        FragmentManager fm = getFragmentManager();
+        Fragment otherLocationFragment = fm.findFragmentById(R.id.containerOtherLocation);
+
+        if (otherLocationFragment == null) {
+            otherLocationFragment = new OtherLocationFragment();
+            fm.beginTransaction()
+                    .add(R.id.containerOtherLocation, otherLocationFragment)
+                    .commit();
+        }
     }
 
-
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -33,4 +45,5 @@ public class OtherLocationActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+    */
 }
