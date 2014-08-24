@@ -28,8 +28,8 @@
         android:textSize="18dp"
         style="?android:listSeparatorTextViewStyle"/>
 
-    <EditText
-        android:id="@+id/city_edit_text"
+    <AutoCompleteTextView
+        android:id="@+id/city_AC_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"/>
