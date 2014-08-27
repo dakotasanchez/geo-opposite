@@ -1,12 +1,16 @@
 package com.sanchez.geoopposite;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -38,7 +42,10 @@ public class OtherLocationFragment extends Fragment {
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
 
+    /* Possibly unsafe to store in var for future */
     private static final String API_KEY = "AIzaSyB2Q4JgxW7hLb88fU-IKkxle-J-uxcq_0g";
+
+    private final String TITLE_ACTION_BAR = "Please enter alternate location";
 
     private AutoCompleteTextView cityACTextView;
     private EditText latEditText;
@@ -56,10 +63,19 @@ public class OtherLocationFragment extends Fragment {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_other_location, container, false);
+
+        if(NavUtils.getParentActivityName(getActivity()) != null) {
+            getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        getActivity().getActionBar().setTitle(TITLE_ACTION_BAR);
+
+        setHasOptionsMenu(true);
 
         cityACTextView = (AutoCompleteTextView)rootView.findViewById(R.id.city_AC_textview);
         cityACTextView.setAdapter(new PlacesAutoCompleteAdapter(getActivity(), R.layout.list_item));
@@ -77,6 +93,19 @@ public class OtherLocationFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                if(NavUtils.getParentActivityName(getActivity()) != null) {
+                    NavUtils.navigateUpFromSameTask(getActivity());
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private ArrayList<String> autocomplete(String input) {
         ArrayList<String> resultList = null;
 
@@ -85,7 +114,7 @@ public class OtherLocationFragment extends Fragment {
         try {
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + API_KEY);
-            sb.append("&components=country:uk");
+            //sb.append("&components=country:uk");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 
             URL url = new URL(sb.toString());
@@ -157,7 +186,9 @@ public class OtherLocationFragment extends Fragment {
 
                         // Assign the data to the FilterResults
                         filterResults.values = resultList;
-                        filterResults.count = resultList.size();
+                        if(resultList != null) {
+                            filterResults.count = resultList.size();
+                        }
                     }
                     return filterResults;
                 }

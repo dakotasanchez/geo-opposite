@@ -9,30 +9,35 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
-        android:paddingLeft="12dp"
-        android:background="@android:color/holo_green_dark"
-        android:text="@string/other_location_title"
-        android:textColor="@android:color/white"
-        android:textSize="20dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         android:paddingLeft="12dp"
         android:text="@string/city"
         android:textColor="@android:color/white"
         android:textSize="18dp"
         style="?android:listSeparatorTextViewStyle"/>
 
-    <AutoCompleteTextView
-        android:id="@+id/city_AC_textview"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"/>
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="20dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="12dp"
+            android:text="@string/location"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/city_AC_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -40,7 +45,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
         android:text="@string/or"
-        android:textColor="@android:color/holo_green_dark"
+        android:textColor="@android:color/holo_blue_light"
         android:textSize="24dp"/>
 
     <TextView
@@ -73,7 +78,8 @@
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:layout_margin="12dp"/>
+            android:layout_margin="12dp"
+            android:textColor="@android:color/white"/>
 
     </LinearLayout>
 
@@ -96,7 +102,8 @@
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:layout_margin="12dp"/>
+            android:layout_margin="12dp"
+            android:textColor="@android:color/white"/>
 
     </LinearLayout>
 

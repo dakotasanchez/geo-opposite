@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0px"
         android:layout_weight="3"
+        android:layout_marginTop="48dp"
         android:src="@drawable/blue_marble"/>
 
     <TextView
