@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.NavUtils;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -78,6 +79,7 @@ public class OtherLocationFragment extends Fragment {
         setHasOptionsMenu(true);
 
         cityACTextView = (AutoCompleteTextView)rootView.findViewById(R.id.city_AC_textview);
+        cityACTextView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         cityACTextView.setAdapter(new PlacesAutoCompleteAdapter(getActivity(), R.layout.list_item));
         cityACTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -88,7 +90,9 @@ public class OtherLocationFragment extends Fragment {
         });
 
         latEditText = (EditText)rootView.findViewById(R.id.lat_edit_text);
+        latEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         longEditText = (EditText)rootView.findViewById(R.id.long_edit_text);
+        longEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         return rootView;
     }
