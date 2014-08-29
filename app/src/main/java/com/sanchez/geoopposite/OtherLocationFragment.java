@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -51,6 +52,7 @@ public class OtherLocationFragment extends Fragment {
     private AutoCompleteTextView cityACTextView;
     private EditText latEditText;
     private EditText longEditText;
+    private Button enterButton;
 
     public OtherLocationFragment() {
     }
@@ -80,6 +82,7 @@ public class OtherLocationFragment extends Fragment {
 
         cityACTextView = (AutoCompleteTextView)rootView.findViewById(R.id.city_AC_textview);
         cityACTextView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        //TODO: add delay before geo-lookup
         cityACTextView.setAdapter(new PlacesAutoCompleteAdapter(getActivity(), R.layout.list_item));
         cityACTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -90,9 +93,22 @@ public class OtherLocationFragment extends Fragment {
         });
 
         latEditText = (EditText)rootView.findViewById(R.id.lat_edit_text);
-        latEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        latEditText.setInputType(InputType.TYPE_CLASS_NUMBER |
+                InputType.TYPE_NUMBER_FLAG_DECIMAL |
+                InputType.TYPE_NUMBER_FLAG_SIGNED);
         longEditText = (EditText)rootView.findViewById(R.id.long_edit_text);
-        longEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        longEditText.setInputType(InputType.TYPE_CLASS_NUMBER |
+                InputType.TYPE_NUMBER_FLAG_DECIMAL |
+                InputType.TYPE_NUMBER_FLAG_SIGNED);
+
+        enterButton = (Button)rootView.findViewById(R.id.enter_button);
+        enterButton.setVisibility(View.INVISIBLE);
+        enterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: Launch map instance with opposite location
+            }
+        });
 
         return rootView;
     }

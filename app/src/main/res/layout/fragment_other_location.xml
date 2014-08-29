@@ -2,16 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_blue"
+    android:background="@color/app_green"
     android:orientation="vertical"
     tools:context="com.sanchez.geoopposite.OtherLocationFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:paddingLeft="12dp"
-        android:text="@string/city"
+        android:text="@string/city_or_state"
         android:textColor="@android:color/white"
         android:textSize="18dp"
         style="?android:listSeparatorTextViewStyle"/>
@@ -35,7 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:dropDownHeight="150dp"/>
 
     </LinearLayout>
 
@@ -106,5 +107,17 @@
             android:textColor="@android:color/white"/>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/enter_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_gravity="center"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:background="@drawable/button_style"
+        android:text="@string/enter"
+        android:textSize="24dp"/>
 
 </LinearLayout>

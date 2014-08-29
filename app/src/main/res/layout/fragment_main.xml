@@ -34,7 +34,7 @@
             android:id="@+id/current_location_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_colors"
+            android:background="@drawable/button_style"
             android:paddingLeft="18dp"
             android:paddingRight="18dp"
             android:layout_margin="8dp"
@@ -44,7 +44,7 @@
             android:id="@+id/other_location_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_colors"
+            android:background="@drawable/button_style"
             android:layout_margin="8dp"
             android:text="@string/other_location"/>
 

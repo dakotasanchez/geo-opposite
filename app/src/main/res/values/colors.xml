@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="app_blue">#3F8FAE</color>
+    <color name="app_green">#3EBD9D</color>
     <color name="opaque_white">#AFFFFFFF</color>
+    <color name="dark_gray">#880A0A0A</color>
 
 </resources>
