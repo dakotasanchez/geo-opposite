@@ -1,5 +1,10 @@
 package com.sanchez.geoopposite;
 
+/*
+Dakota Sanchez
+Summer 2014
+ */
+
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;

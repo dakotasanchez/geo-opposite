@@ -1,9 +1,16 @@
 package com.sanchez.geoopposite;
 
+/*
+Dakota Sanchez
+Summer 2014
+ */
+
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -34,17 +41,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class OtherLocationFragment extends Fragment {
 
     private static final String TAG = OtherLocationFragment.class.getSimpleName();
 
-    /* For retrieving autocomplete locations */
+    // For retrieving autocomplete locations
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
 
-    /* Possibly unsafe to store in var for future */
+    // Possibly unsafe to store in var for future
     private static final String API_KEY = "AIzaSyB2Q4JgxW7hLb88fU-IKkxle-J-uxcq_0g";
 
     private final String TITLE_ACTION_BAR = "Please enter alternate location";
@@ -82,13 +91,12 @@ public class OtherLocationFragment extends Fragment {
 
         cityACTextView = (AutoCompleteTextView)rootView.findViewById(R.id.city_AC_textview);
         cityACTextView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        //TODO: add delay before geo-lookup
         cityACTextView.setAdapter(new PlacesAutoCompleteAdapter(getActivity(), R.layout.list_item));
-        cityACTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        cityACTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String s = (String)adapterView.getItemAtPosition(position);
-                Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                new ShowEnterButton().execute();
             }
         });
 
@@ -96,21 +104,78 @@ public class OtherLocationFragment extends Fragment {
         latEditText.setInputType(InputType.TYPE_CLASS_NUMBER |
                 InputType.TYPE_NUMBER_FLAG_DECIMAL |
                 InputType.TYPE_NUMBER_FLAG_SIGNED);
+
         longEditText = (EditText)rootView.findViewById(R.id.long_edit_text);
         longEditText.setInputType(InputType.TYPE_CLASS_NUMBER |
                 InputType.TYPE_NUMBER_FLAG_DECIMAL |
                 InputType.TYPE_NUMBER_FLAG_SIGNED);
+
+        longEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new ShowEnterButton().execute();
+            }
+        });
 
         enterButton = (Button)rootView.findViewById(R.id.enter_button);
         enterButton.setVisibility(View.INVISIBLE);
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Launch map instance with opposite location
+                new GetCoordinatesFromLocation().execute(cityACTextView.getText().toString());
             }
         });
 
         return rootView;
+    }
+
+    // Show Enter button after delay
+    private class ShowEnterButton extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Thread.sleep(2500);
+            } catch (InterruptedException e) {
+                Log.e(TAG, e.getMessage());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void voidResult) {
+            if(enterButton.getVisibility() == View.INVISIBLE) {
+                enterButton.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    // TODO Handle timeout or Geocoder service unavailable...
+    private class GetCoordinatesFromLocation extends AsyncTask<String, Void, ArrayList<Double>> {
+
+        @Override
+        protected ArrayList<Double> doInBackground(String... location) {
+            double latitude = 0, longitude = 0;
+            try {
+                Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+                List<Address> addresses = geocoder.getFromLocationName(cityACTextView.getText().toString(), 1);
+                Address address = addresses.get(0);
+                latitude = address.getLatitude();
+                longitude = address.getLongitude();
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage());
+            }
+            ArrayList<Double> returnList = new ArrayList<Double>();
+            returnList.add(latitude);
+            returnList.add(longitude);
+
+            return returnList;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Double> result) {
+            Toast.makeText(getActivity(), "" + result.get(0) + ", " + result.get(1), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -126,6 +191,9 @@ public class OtherLocationFragment extends Fragment {
         }
     }
 
+    /*
+     Return ArrayList of potential location matches to input string
+     */
     private ArrayList<String> autocomplete(String input) {
         ArrayList<String> resultList = null;
 
@@ -134,7 +202,6 @@ public class OtherLocationFragment extends Fragment {
         try {
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + API_KEY);
-            //sb.append("&components=country:uk");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 
             URL url = new URL(sb.toString());
@@ -176,6 +243,9 @@ public class OtherLocationFragment extends Fragment {
         return resultList;
     }
 
+    /*
+     Provide interface to updating list of locations for AutoCompleteTextView
+     */
     private class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
         private ArrayList<String> resultList;
