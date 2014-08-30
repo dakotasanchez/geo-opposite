@@ -7,7 +7,7 @@
     </style>
 
     <style name="MyListViewStyle" parent="@android:style/Widget.ListView">
-        <item name="android:divider">#33FFFFFF</item>
+        <item name="android:divider">@color/dark_gray</item>
         <item name="android:dividerHeight">1px</item>
     </style>
 
