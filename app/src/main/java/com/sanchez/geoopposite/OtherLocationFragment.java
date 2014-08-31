@@ -40,6 +40,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -175,7 +176,15 @@ public class OtherLocationFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<Double> result) {
             Toast.makeText(getActivity(), "" + result.get(0) + ", " + result.get(1), Toast.LENGTH_LONG).show();
+            double[] opps = getOppositeCoordinates(result.get(0), result.get(1));
+            Toast.makeText(getActivity(), "Opposite = " + opps[0] + ", " + opps[1], Toast.LENGTH_LONG).show();
         }
+    }
+
+    private double[] getOppositeCoordinates(double lat, double lon) {
+        double newLon = lon < 0.0 ? lon + 180.0 : lon - 180.0;
+        DecimalFormat df = new DecimalFormat("#.#######"); // chop off some precision to be consistent
+        return new double[] { -1.0 * lat , Double.valueOf(df.format(newLon)) };
     }
 
     @Override
