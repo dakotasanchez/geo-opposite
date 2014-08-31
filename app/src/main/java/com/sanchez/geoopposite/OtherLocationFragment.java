@@ -15,7 +15,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.NavUtils;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -58,6 +60,8 @@ public class OtherLocationFragment extends Fragment {
     private static final String API_KEY = "AIzaSyB2Q4JgxW7hLb88fU-IKkxle-J-uxcq_0g";
 
     private final String TITLE_ACTION_BAR = "Please enter alternate location";
+    private final String NOTHING_ENTERED = "No location or coordinates entered";
+    private final String FILL_BOTH_FIELDS = "Please fill both coordinate fields";
 
     private AutoCompleteTextView cityACTextView;
     private EditText latEditText;
@@ -101,10 +105,34 @@ public class OtherLocationFragment extends Fragment {
             }
         });
 
+        //TODO Redo as private class that takes the widget through the constructor
+        cityACTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         latEditText = (EditText)rootView.findViewById(R.id.lat_edit_text);
         latEditText.setInputType(InputType.TYPE_CLASS_NUMBER |
                 InputType.TYPE_NUMBER_FLAG_DECIMAL |
                 InputType.TYPE_NUMBER_FLAG_SIGNED);
+
+        latEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new ShowEnterButton().execute();
+            }
+        });
 
         longEditText = (EditText)rootView.findViewById(R.id.long_edit_text);
         longEditText.setInputType(InputType.TYPE_CLASS_NUMBER |
@@ -123,7 +151,21 @@ public class OtherLocationFragment extends Fragment {
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new GetCoordinatesFromLocation().execute(cityACTextView.getText().toString());
+                if(!(cityACTextView.getText().toString()).equals("")) {
+                    new GetCoordinatesFromLocation().execute(cityACTextView.getText().toString());
+                } else {
+                    String lat = latEditText.getText().toString();
+                    String lon = longEditText.getText().toString();
+
+                    if(lat.equals("") && lon.equals("")) {
+                        Toast.makeText(getActivity(), NOTHING_ENTERED, Toast.LENGTH_LONG).show();
+                    } else if(lat.equals("") || lon.equals("")) {
+                        Toast.makeText(getActivity(), FILL_BOTH_FIELDS, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getActivity(), lat + ", " + lon, Toast.LENGTH_LONG).show();
+                        launchMap(getOppositeCoordinates(Double.valueOf(lat), Double.valueOf(lon)));
+                    }
+                }
             }
         });
 
@@ -136,7 +178,7 @@ public class OtherLocationFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                Thread.sleep(2500);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -156,35 +198,40 @@ public class OtherLocationFragment extends Fragment {
 
         @Override
         protected ArrayList<Double> doInBackground(String... location) {
-            double latitude = 0, longitude = 0;
+            ArrayList<Double> returnList = new ArrayList<Double>();
             try {
                 Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                List<Address> addresses = geocoder.getFromLocationName(cityACTextView.getText().toString(), 1);
-                Address address = addresses.get(0);
-                latitude = address.getLatitude();
-                longitude = address.getLongitude();
+                List<Address> addresses = geocoder.getFromLocationName(location[0], 1);
+                Address address = addresses.get(0); // TODO Handle bad input locations that render this an empty list...
+                returnList.add(address.getLatitude());
+                returnList.add(address.getLongitude());
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
             }
-            ArrayList<Double> returnList = new ArrayList<Double>();
-            returnList.add(latitude);
-            returnList.add(longitude);
 
             return returnList;
         }
 
         @Override
         protected void onPostExecute(ArrayList<Double> result) {
-            Toast.makeText(getActivity(), "" + result.get(0) + ", " + result.get(1), Toast.LENGTH_LONG).show();
-            double[] opps = getOppositeCoordinates(result.get(0), result.get(1));
-            Toast.makeText(getActivity(), "Opposite = " + opps[0] + ", " + opps[1], Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), result.get(0) + ", " + result.get(1), Toast.LENGTH_LONG).show();
+            launchMap(getOppositeCoordinates(result.get(0), result.get(1)));
         }
     }
 
     private double[] getOppositeCoordinates(double lat, double lon) {
         double newLon = lon < 0.0 ? lon + 180.0 : lon - 180.0;
-        DecimalFormat df = new DecimalFormat("#.#######"); // chop off some precision to be consistent
-        return new double[] { -1.0 * lat , Double.valueOf(df.format(newLon)) };
+        return new double[] { -1.0 * lat , truncate(newLon) };
+    }
+
+    // remove some precision to have consistent precision throughout app
+    private double truncate(double in) {
+        return Double.valueOf(new DecimalFormat("#.#######").format(in));
+    }
+
+    private void launchMap(double[] args) {
+        Toast.makeText(getActivity(), "Opposite = " + args[0] + ", " + args[1], Toast.LENGTH_LONG).show();
+        //TODO: launch map activity with args
     }
 
     @Override
