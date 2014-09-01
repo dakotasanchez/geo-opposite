@@ -9,7 +9,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -97,6 +95,7 @@ public class OtherLocationFragment extends Fragment {
         cityACTextView = (AutoCompleteTextView)rootView.findViewById(R.id.city_AC_textview);
         cityACTextView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         cityACTextView.setAdapter(new PlacesAutoCompleteAdapter(getActivity(), R.layout.list_item));
+        cityACTextView.addTextChangedListener(new LocationTextWatcher(cityACTextView));
 
         cityACTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,27 +104,12 @@ public class OtherLocationFragment extends Fragment {
             }
         });
 
-        //TODO Redo as private class that takes the widget through the constructor
-        cityACTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
         latEditText = (EditText)rootView.findViewById(R.id.lat_edit_text);
         latEditText.setInputType(InputType.TYPE_CLASS_NUMBER |
                 InputType.TYPE_NUMBER_FLAG_DECIMAL |
                 InputType.TYPE_NUMBER_FLAG_SIGNED);
+
+        latEditText.addTextChangedListener(new LocationTextWatcher(latEditText));
 
         latEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +122,8 @@ public class OtherLocationFragment extends Fragment {
         longEditText.setInputType(InputType.TYPE_CLASS_NUMBER |
                 InputType.TYPE_NUMBER_FLAG_DECIMAL |
                 InputType.TYPE_NUMBER_FLAG_SIGNED);
+
+        longEditText.addTextChangedListener(new LocationTextWatcher(longEditText));
 
         longEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -351,5 +337,29 @@ public class OtherLocationFragment extends Fragment {
             };
             return filter;
         }
+    }
+
+    private class LocationTextWatcher implements TextWatcher {
+
+        private EditText e;
+
+        public LocationTextWatcher(EditText e) {
+            this.e = e;
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            if(e.hashCode() == cityACTextView.hashCode()) {
+                //TODO empty other EditTexts text fields
+            } else {
+                //TODO empty cityACTextView text field
+            }
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {}
+
+        @Override
+        public void afterTextChanged(Editable editable) {}
     }
 }
