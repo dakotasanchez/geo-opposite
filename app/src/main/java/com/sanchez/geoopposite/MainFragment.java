@@ -7,6 +7,7 @@ Summer 2014
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,7 +39,7 @@ public class MainFragment extends Fragment {
         currentLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "Current location button");
+                new LaunchMapTask().execute();
             }
         });
 
@@ -52,5 +53,19 @@ public class MainFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private class LaunchMapTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            // TODO Get device location
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // TODO Launch new activity
+        }
     }
 }
