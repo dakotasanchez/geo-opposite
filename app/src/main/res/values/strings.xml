@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Layout strings -->
     <string name="app_name">Geo Opposite</string>
     <string name="action_settings">Settings</string>
     <string name="my_location">My Location</string>
@@ -15,5 +16,13 @@
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="enter">Enter</string>
+
+    <!-- Toast strings -->
+    <string name="title_action_bar">Please enter alternate location</string>
+    <string name="no_loc_entered">No location entered</string>
+    <string name="no_coord_entered">No coordinates entered</string>
+    <string name="fill_both_fields">Please fill both coordinate fields</string>
+    <string name="invalid_input">Invalid input location</string>
+    <string name="fetching_data">Fetching location data...</string>
 
 </resources>
