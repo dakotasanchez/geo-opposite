@@ -24,5 +24,8 @@
     <string name="fill_both_fields">Please fill both coordinate fields</string>
     <string name="invalid_input">Invalid input location</string>
     <string name="fetching_data">Fetching location data...</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

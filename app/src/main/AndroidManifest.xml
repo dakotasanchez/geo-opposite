@@ -24,9 +24,18 @@
         </activity>
         <activity
             android:name=".OtherLocationActivity"
-            android:label="@string/title_activity_other_location">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+            android:label="@string/title_activity_other_location" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".MapActivity"
+            android:label="@string/title_activity_map"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.sanchez.geoopposite.MainActivity" />
         </activity>
     </application>
 

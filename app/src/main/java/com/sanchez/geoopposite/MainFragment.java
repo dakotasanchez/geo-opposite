@@ -40,6 +40,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 new LaunchMapTask().execute();
+                currentLocationButton.setEnabled(false);
             }
         });
 
