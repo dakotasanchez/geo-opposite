@@ -7,6 +7,7 @@ Summer 2014
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -158,7 +159,9 @@ public class OtherLocationFragment extends Fragment {
     private void launchMap(double[] args) {
         Toast.makeText(getActivity(), "Opposite = " + args[0] + ", " + args[1], Toast.LENGTH_SHORT).show();
         Toast.makeText(getActivity(), getResources().getString(R.string.fetching_data), Toast.LENGTH_LONG).show();
-        //TODO: launch map activity with args
+        Intent i = new Intent(getActivity(), MapActivity.class);
+        i.putExtra(MapActivity.EXTRA_COORDINATES, args);
+        startActivity(i);
     }
 
     @Override

@@ -10,28 +10,15 @@ import android.view.ViewGroup;
 
 public class MapFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String EXTRA_COORDINATES = "com.sanchez.geoopposite.extra_coordinates";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private double[] coordinates;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MapFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MapFragment newInstance(String param1, String param2) {
+    // return a new instance of MapFragment with packaged arguments
+    public static MapFragment newInstance(double[] coords) {
         MapFragment fragment = new MapFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putDoubleArray(EXTRA_COORDINATES, coords);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,8 +30,8 @@ public class MapFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // retrieve arguments passed from MapActivity (that it got from MainFragment)
+            coordinates = getArguments().getDoubleArray(EXTRA_COORDINATES);
         }
     }
 

@@ -1,6 +1,8 @@
 package com.sanchez.geoopposite;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,10 +10,25 @@ import com.sanchez.geoopposite.R;
 
 public class MapActivity extends Activity {
 
+    public static final String EXTRA_COORDINATES = "com.sanchez.geoopposite.extra_coordinates";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        // grab values passed from MainFragment
+        double[] coords = getIntent().getDoubleArrayExtra(EXTRA_COORDINATES);
+
+        FragmentManager fm = getFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.containerMap);
+
+        if(fragment == null) {
+            fragment = MapFragment.newInstance(coords);
+            fm.beginTransaction()
+                    .add(R.id.containerMap, fragment)
+                    .commit();
+        }
     }
 
     /*
