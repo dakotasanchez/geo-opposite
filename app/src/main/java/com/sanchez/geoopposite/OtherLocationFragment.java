@@ -148,6 +148,7 @@ public class OtherLocationFragment extends Fragment {
                 } else if(lat.equals("") || lon.equals("")) {
                     Toast.makeText(getActivity(), getResources().getString(R.string.fill_both_fields), Toast.LENGTH_LONG).show();
                 } else {
+                    Log.i(TAG,  "Before reversal: " + Double.valueOf(lat) + " " + Double.valueOf(lon));
                     launchMap(Utils.getOppositeCoordinates(Double.valueOf(lat), Double.valueOf(lon)));
                 }
             }
@@ -157,7 +158,7 @@ public class OtherLocationFragment extends Fragment {
     }
 
     private void launchMap(double[] args) {
-        Toast.makeText(getActivity(), "Opposite = " + args[0] + ", " + args[1], Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "Opposite = " + args[0] + ", " + args[1], Toast.LENGTH_SHORT).show();
         Toast.makeText(getActivity(), getResources().getString(R.string.fetching_data), Toast.LENGTH_LONG).show();
         Intent i = new Intent(getActivity(), MapActivity.class);
         i.putExtra(MapActivity.EXTRA_COORDINATES, args);
@@ -223,6 +224,7 @@ public class OtherLocationFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<Double> result) {
             if(result != null) {
+                Log.i(TAG,  "Before reversal: " + result.get(0) + " " + result.get(1));
                 launchMap(Utils.getOppositeCoordinates(result.get(0), result.get(1)));
             } else {
                 Toast.makeText(getActivity(), getResources().getString(R.string.invalid_input), Toast.LENGTH_LONG).show();

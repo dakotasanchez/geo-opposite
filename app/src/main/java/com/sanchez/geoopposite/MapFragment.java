@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class MapFragment extends Fragment {
 
@@ -40,6 +41,8 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
+        TextView testText = (TextView)rootView.findViewById(R.id.test_id);
+        testText.setText("Fragment received coords: " + coordinates[0] + " " + coordinates[1]);
 
         return rootView;
     }
