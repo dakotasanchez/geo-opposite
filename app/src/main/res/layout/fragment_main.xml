@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@android:color/black"
+    tools:context=".MainActivity$PlaceholderFragment">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="0px"
+        android:layout_weight="3"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/blue_marble"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="24dp"
+        android:textColor="@android:color/white"
+        android:textSize="24dp"
+        android:text="@string/pick"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0px"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/current_location_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_style"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:layout_margin="8dp"
+            android:text="@string/my_location"/>
+
+        <Button
+            android:id="@+id/other_location_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_style"
+            android:layout_margin="8dp"
+            android:text="@string/other_location"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
