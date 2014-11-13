@@ -1,5 +1,7 @@
 package com.sanchez.geoopposite;
 
+import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.*;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
