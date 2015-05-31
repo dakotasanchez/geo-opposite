@@ -11,7 +11,10 @@
     <string name="title_activity_other_location">OtherLocationActivity</string>
     <string name="other_location_title">Please enter alternate location</string>
     <string name="city_or_state">City or State</string>
+    <string name="same_hemisphere">Stay in same hemisphere?</string>
     <string name="or">OR</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="coordinates">Coordinates (Decimal degrees)</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>

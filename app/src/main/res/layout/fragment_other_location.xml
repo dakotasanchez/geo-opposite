@@ -60,7 +60,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
         android:text="@string/or"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@android:color/holo_blue_dark"
         android:textSize="20dp"/>
 
     <TextView
