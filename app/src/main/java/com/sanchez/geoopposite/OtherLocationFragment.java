@@ -6,6 +6,7 @@ Summer 2014
  */
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -45,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class OtherLocationFragment extends Fragment {
+public class OtherLocationFragment extends Fragment implements HemisphereDialogFragment.SuperListener{
 
     private static final String TAG = OtherLocationFragment.class.getSimpleName();
 
@@ -149,7 +150,7 @@ public class OtherLocationFragment extends Fragment {
                     Toast.makeText(getActivity(), getResources().getString(R.string.fill_both_fields), Toast.LENGTH_LONG).show();
                 } else {
                     Log.i(TAG,  "Before reversal: " + Double.valueOf(lat) + " " + Double.valueOf(lon));
-                    launchMap(Utils.getOppositeCoordinates(Double.valueOf(lat), Double.valueOf(lon)));
+                    launchHemisphereDialog(Utils.getOppositeCoordinates(Double.valueOf(lat), Double.valueOf(lon)));
                 }
             }
         });
@@ -157,11 +158,20 @@ public class OtherLocationFragment extends Fragment {
         return rootView;
     }
 
-    private void launchMap(double[] args) {
-        Toast.makeText(getActivity(), getResources().getString(R.string.fetching_data), Toast.LENGTH_LONG).show();
-        Intent i = new Intent(getActivity(), MapActivity.class);
-        i.putExtra(MapActivity.EXTRA_COORDINATES, args);
-        startActivity(i);
+    private void launchHemisphereDialog(double[] args) {
+        Toast.makeText(getActivity(), getResources().getString(R.string.fetching_data), Toast.LENGTH_SHORT).show();
+
+        HemisphereDialogFragment dialogFragment = HemisphereDialogFragment.newInstance(this);
+        dialogFragment.show(getFragmentManager(), "dialog_get_hemisphere");
+
+        //Intent i = new Intent(getActivity(), MapActivity.class);
+        //i.putExtra(MapActivity.EXTRA_COORDINATES, updatedArgs);
+        //startActivity(i);
+    }
+
+    @Override
+    public void onSelection(boolean yesSelected) {
+        Toast.makeText(getActivity(), "" + yesSelected, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -224,7 +234,7 @@ public class OtherLocationFragment extends Fragment {
         protected void onPostExecute(ArrayList<Double> result) {
             if(result != null) {
                 Log.i(TAG,  "Before reversal: " + result.get(0) + " " + result.get(1));
-                launchMap(Utils.getOppositeCoordinates(result.get(0), result.get(1)));
+                launchHemisphereDialog(Utils.getOppositeCoordinates(result.get(0), result.get(1)));
             } else {
                 Toast.makeText(getActivity(), getResources().getString(R.string.invalid_input), Toast.LENGTH_LONG).show();
             }

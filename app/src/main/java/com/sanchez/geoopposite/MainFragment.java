@@ -14,8 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements HemisphereDialogFragment.SuperListener{
 
     private static final String TAG = MainFragment.class.getSimpleName();
 
@@ -56,6 +57,18 @@ public class MainFragment extends Fragment {
         return rootView;
     }
 
+    private void launchHemisphereDialog(double[] args) {
+        Toast.makeText(getActivity(), getResources().getString(R.string.fetching_data), Toast.LENGTH_SHORT).show();
+
+        HemisphereDialogFragment dialogFragment = HemisphereDialogFragment.newInstance(this);
+        dialogFragment.show(getFragmentManager(), "dialog_get_hemisphere");
+    }
+
+    @Override
+    public void onSelection(boolean yesSelected) {
+        Toast.makeText(getActivity(), "" + yesSelected, Toast.LENGTH_LONG).show();
+    }
+
     private class LaunchMapTask extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -66,6 +79,8 @@ public class MainFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
+            //Testing
+            launchHemisphereDialog(new double[] { 0.0, 0.0});
             // TODO Launch new activity
         }
     }
