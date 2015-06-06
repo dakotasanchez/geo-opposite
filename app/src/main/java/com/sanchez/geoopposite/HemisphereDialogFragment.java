@@ -10,7 +10,7 @@ import android.os.Bundle;
 public class HemisphereDialogFragment extends DialogFragment {
 
     public interface SuperListener {
-        void onSelection(boolean yesSelected);
+        void onHemisphereSelection(boolean yesSelected);
     }
 
     public static HemisphereDialogFragment newInstance(SuperListener listener) {
@@ -27,14 +27,14 @@ public class HemisphereDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Fragment parent = getTargetFragment();
-                        ((SuperListener) parent).onSelection(true);
+                        ((SuperListener) parent).onHemisphereSelection(true);
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Fragment parent = getTargetFragment();
-                        ((SuperListener) parent).onSelection(false);
+                        ((SuperListener) parent).onHemisphereSelection(false);
                     }
                 });
         return  builder.create();

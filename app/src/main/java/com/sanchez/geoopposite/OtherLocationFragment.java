@@ -170,7 +170,7 @@ public class OtherLocationFragment extends Fragment implements HemisphereDialogF
     }
 
     @Override
-    public void onSelection(boolean yesSelected) {
+    public void onHemisphereSelection(boolean yesSelected) {
         Toast.makeText(getActivity(), "" + yesSelected, Toast.LENGTH_LONG).show();
     }
 

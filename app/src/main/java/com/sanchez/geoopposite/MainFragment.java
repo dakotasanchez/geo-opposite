@@ -65,7 +65,7 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
     }
 
     @Override
-    public void onSelection(boolean yesSelected) {
+    public void onHemisphereSelection(boolean yesSelected) {
         Toast.makeText(getActivity(), "" + yesSelected, Toast.LENGTH_LONG).show();
     }
 
