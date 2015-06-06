@@ -60,13 +60,13 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
     private void launchHemisphereDialog(double[] args) {
         Toast.makeText(getActivity(), getResources().getString(R.string.fetching_data), Toast.LENGTH_SHORT).show();
 
-        HemisphereDialogFragment dialogFragment = HemisphereDialogFragment.newInstance(this);
+        HemisphereDialogFragment dialogFragment = HemisphereDialogFragment.newInstance(this, args);
         dialogFragment.show(getFragmentManager(), "dialog_get_hemisphere");
     }
 
     @Override
-    public void onHemisphereSelection(boolean yesSelected) {
-        Toast.makeText(getActivity(), "" + yesSelected, Toast.LENGTH_LONG).show();
+    public void onHemisphereSelection(double[] coords) {
+        Toast.makeText(getActivity(), "", Toast.LENGTH_LONG).show();
     }
 
     private class LaunchMapTask extends AsyncTask<Void, Void, Void> {
