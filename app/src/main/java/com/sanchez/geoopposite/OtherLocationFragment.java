@@ -85,6 +85,7 @@ public class OtherLocationFragment extends Fragment implements HemisphereDialogF
 
         setHasOptionsMenu(true);
 
+        // TODO change api to the new standard
         cityACTextView = (AutoCompleteTextView)rootView.findViewById(R.id.city_AC_textview);
         cityACTextView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         cityACTextView.setAdapter(new PlacesAutoCompleteAdapter(getActivity(), R.layout.list_item));
@@ -171,7 +172,10 @@ public class OtherLocationFragment extends Fragment implements HemisphereDialogF
 
     @Override
     public void onHemisphereSelection(double[] coords) {
-        Toast.makeText(getActivity(), "coords after dialog" + coords[0] + " " + coords[1], Toast.LENGTH_LONG).show();
+        Intent i = new Intent(getActivity(), MapActivity.class);
+        i.putExtra(MapActivity.EXTRA_COORDINATES, coords);
+        // Launch map activity
+        startActivity(i);
     }
 
     @Override

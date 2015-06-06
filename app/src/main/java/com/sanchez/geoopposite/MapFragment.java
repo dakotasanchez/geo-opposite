@@ -33,7 +33,7 @@ public class MapFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            // retrieve arguments passed from MapActivity (that it got from MainFragment)
+            // retrieve arguments passed from MapActivity
             coordinates = getArguments().getDoubleArray(EXTRA_COORDINATES);
         }
     }
@@ -42,6 +42,7 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+
 
         TextView testText = (TextView)rootView.findViewById(R.id.test_id);
         testText.setText("Fragment received coords: " + coordinates[0] + " " + coordinates[1]);

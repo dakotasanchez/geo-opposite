@@ -66,7 +66,10 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
 
     @Override
     public void onHemisphereSelection(double[] coords) {
-        Toast.makeText(getActivity(), "", Toast.LENGTH_LONG).show();
+        Intent i = new Intent(getActivity(), MapActivity.class);
+        i.putExtra(MapActivity.EXTRA_COORDINATES, coords);
+        // Launch map activity
+        startActivity(i);
     }
 
     private class LaunchMapTask extends AsyncTask<Void, Void, Void> {
@@ -81,7 +84,7 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
         protected void onPostExecute(Void result) {
             //Testing
             launchHemisphereDialog(new double[] { 0.0, 0.0});
-            // TODO Launch new activity
+            // TODO Launch map
         }
     }
 }

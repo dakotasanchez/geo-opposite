@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 public class HemisphereDialogFragment extends DialogFragment {
 
-    private static String COORDS_KEY = "com.sanchez.geoopposite.COORDS_KEY";
+    private static String COORDS_KEY = "com.sanchez.geoopposite.coords_key";
 
     public interface SuperListener {
         void onHemisphereSelection(double[] coords);
@@ -26,7 +26,7 @@ public class HemisphereDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Bundle bundle = this.getArguments();
+        Bundle bundle = getArguments();
         final double[] coords = bundle.getDoubleArray(COORDS_KEY);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
