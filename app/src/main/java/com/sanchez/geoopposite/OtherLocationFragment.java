@@ -9,6 +9,7 @@ import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -31,6 +32,10 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +51,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class OtherLocationFragment extends Fragment implements HemisphereDialogFragment.SuperListener{
+public class OtherLocationFragment extends Fragment implements
+        HemisphereDialogFragment.SuperListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = OtherLocationFragment.class.getSimpleName();
 
@@ -56,7 +64,13 @@ public class OtherLocationFragment extends Fragment implements HemisphereDialogF
     private static final String OUT_JSON = "/json";
 
     // Possibly unsafe to store in var for future
-    private static final String API_KEY = "AIzaSyB2Q4JgxW7hLb88fU-IKkxle-J-uxcq_0g";
+    private static final String API_KEY = "";
+
+    /* Request code used to invoke sign in user interactions. */
+    //private static final int RC_SIGN_IN = 0;
+
+    private GoogleApiClient googleApiClient;
+    //private boolean intentInProgress;
 
     private AutoCompleteTextView cityACTextView;
     private EditText latEditText;
@@ -69,6 +83,55 @@ public class OtherLocationFragment extends Fragment implements HemisphereDialogF
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        googleApiClient = new GoogleApiClient
+                .Builder(getActivity())
+                .addApi(Places.GEO_DATA_API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+    }
+
+    @Override
+    public void onConnected(Bundle onConnectionHint) {
+        // TODO
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        // TODO Handle connection failure (look in Android Places API docs)
+
+        /*
+        if (!intentInProgress && result.hasResolution()) {
+            try {
+                intentInProgress = true;
+                result.startResolutionForResult(this, RC_SIGN_IN);
+            } catch (IntentSender.SendIntentException e) {
+                // The intent was canceled before it was sent. Return to
+                // default
+                // state and attempt to connect to get an updated
+                // ConnectionResult.
+                intentInProgress = false;
+                googleApiClient.connect();
+            }
+        }
+        */
+    }
+
+    public void onConnectionSuspended(int cause) {
+        googleApiClient.connect();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        googleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        googleApiClient.disconnect();
+        super.onStop();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
