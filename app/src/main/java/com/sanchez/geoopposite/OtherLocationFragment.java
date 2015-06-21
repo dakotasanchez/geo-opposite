@@ -46,15 +46,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class OtherLocationFragment extends Fragment implements
-        HemisphereDialogFragment.SuperListener,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+        HemisphereDialogFragment.SuperListener {
 
     private static final String TAG = OtherLocationFragment.class.getSimpleName();
 
@@ -84,14 +81,15 @@ public class OtherLocationFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        googleApiClient = new GoogleApiClient
-                .Builder(getActivity())
-                .addApi(Places.GEO_DATA_API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
+        //googleApiClient = new GoogleApiClient
+        //        .Builder(getActivity())
+        //        .addApi(Places.GEO_DATA_API)
+        //        .addConnectionCallbacks(this)
+        //        .addOnConnectionFailedListener(this)
+        //        .build();
     }
 
+    /*
     @Override
     public void onConnected(Bundle onConnectionHint) {
         // TODO
@@ -101,7 +99,7 @@ public class OtherLocationFragment extends Fragment implements
     public void onConnectionFailed(ConnectionResult result) {
         // TODO Handle connection failure (look in Android Places API docs)
 
-        /*
+
         if (!intentInProgress && result.hasResolution()) {
             try {
                 intentInProgress = true;
@@ -115,7 +113,6 @@ public class OtherLocationFragment extends Fragment implements
                 googleApiClient.connect();
             }
         }
-        */
     }
 
     public void onConnectionSuspended(int cause) {
@@ -133,6 +130,7 @@ public class OtherLocationFragment extends Fragment implements
         googleApiClient.disconnect();
         super.onStop();
     }
+    */
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
