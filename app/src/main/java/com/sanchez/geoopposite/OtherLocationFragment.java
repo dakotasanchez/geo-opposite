@@ -6,16 +6,14 @@ Summer 2014
  */
 
 import android.annotation.TargetApi;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.text.InputType;
 import android.util.Log;
@@ -24,50 +22,33 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class OtherLocationFragment extends Fragment implements
-        HemisphereDialogFragment.SuperListener {
+        HemisphereDialogFragment.SuperListener,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = OtherLocationFragment.class.getSimpleName();
-
-    // For retrieving autocomplete locations
-    private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
-    private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
-    private static final String OUT_JSON = "/json";
-
-    // Possibly unsafe to store in var for future
-    private static final String API_KEY = "";
-
-    /* Request code used to invoke sign in user interactions. */
-    //private static final int RC_SIGN_IN = 0;
+    private static final int GOOGLE_API_CLIENT_ID = 0;
+    private static final LatLngBounds BOUNDS_NORTH_AMERICA = new LatLngBounds(new LatLng(18.000000, -64.000000),
+            new LatLng(67.000000, -165.000000));
 
     private GoogleApiClient googleApiClient;
-    //private boolean intentInProgress;
+    private PlaceAutocompleteAdapter acAdapter;
 
     private AutoCompleteTextView cityACTextView;
     private EditText latEditText;
@@ -81,56 +62,22 @@ public class OtherLocationFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //googleApiClient = new GoogleApiClient
-        //        .Builder(getActivity())
-        //        .addApi(Places.GEO_DATA_API)
-        //        .addConnectionCallbacks(this)
-        //        .addOnConnectionFailedListener(this)
-        //        .build();
-    }
-
-    /*
-    @Override
-    public void onConnected(Bundle onConnectionHint) {
-        // TODO
+        googleApiClient = new GoogleApiClient
+                .Builder(getActivity())
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage((FragmentActivity) getActivity(), GOOGLE_API_CLIENT_ID, this)
+                .build();
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        // TODO Handle connection failure (look in Android Places API docs)
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e(TAG, "Google Places API connection failed with error code: "
+                + connectionResult.getErrorCode());
 
-
-        if (!intentInProgress && result.hasResolution()) {
-            try {
-                intentInProgress = true;
-                result.startResolutionForResult(this, RC_SIGN_IN);
-            } catch (IntentSender.SendIntentException e) {
-                // The intent was canceled before it was sent. Return to
-                // default
-                // state and attempt to connect to get an updated
-                // ConnectionResult.
-                intentInProgress = false;
-                googleApiClient.connect();
-            }
-        }
+        // TODO: Check error code and provide solution
+        Toast.makeText(getActivity(), "Google Places API connection failed with error code:" +
+                        connectionResult.getErrorCode(), Toast.LENGTH_LONG).show();
     }
-
-    public void onConnectionSuspended(int cause) {
-        googleApiClient.connect();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        googleApiClient.connect();
-    }
-
-    @Override
-    public void onStop() {
-        googleApiClient.disconnect();
-        super.onStop();
-    }
-    */
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -146,10 +93,12 @@ public class OtherLocationFragment extends Fragment implements
 
         setHasOptionsMenu(true);
 
-        // TODO change api to the new standard
+        acAdapter = new PlaceAutocompleteAdapter(getActivity(), android.R.layout.simple_list_item_1,
+                googleApiClient, BOUNDS_NORTH_AMERICA, null);
+
         cityACTextView = (AutoCompleteTextView)rootView.findViewById(R.id.city_AC_textview);
         cityACTextView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        cityACTextView.setAdapter(new PlacesAutoCompleteAdapter(getActivity(), R.layout.list_item));
+        cityACTextView.setAdapter(acAdapter);
 
         cityACTextView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -225,10 +174,6 @@ public class OtherLocationFragment extends Fragment implements
 
         HemisphereDialogFragment dialogFragment = HemisphereDialogFragment.newInstance(this, args);
         dialogFragment.show(getFragmentManager(), "dialog_get_hemisphere");
-
-        //Intent i = new Intent(getActivity(), MapActivity.class);
-        //i.putExtra(MapActivity.EXTRA_COORDINATES, updatedArgs);
-        //startActivity(i);
     }
 
     @Override
@@ -304,107 +249,5 @@ public class OtherLocationFragment extends Fragment implements
                 Toast.makeText(getActivity(), getResources().getString(R.string.invalid_input), Toast.LENGTH_LONG).show();
             }
         }
-    }
-
-    // Provide interface to updating list of locations for AutoCompleteTextView
-    private class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
-
-        private ArrayList<String> resultList;
-
-        public PlacesAutoCompleteAdapter(Context context, int textViewResouceId) {
-            super(context, textViewResouceId);
-        }
-
-        @Override
-        public int getCount() {
-            return resultList.size();
-        }
-
-        @Override
-        public String getItem(int index) {
-            return resultList.get(index);
-        }
-
-        @Override
-        public Filter getFilter() {
-            Filter filter = new Filter() {
-                @Override
-                protected FilterResults performFiltering(CharSequence constraint) {
-                    FilterResults filterResults = new FilterResults();
-                    if (constraint != null) {
-                        // Retrieve the autocomplete results.
-                        resultList = autocomplete(constraint.toString());
-
-                        // Assign the data to the FilterResults
-                        filterResults.values = resultList;
-                        if(resultList != null) {
-                            filterResults.count = resultList.size();
-                        }
-                    }
-                    return filterResults;
-                }
-
-                @Override
-                protected void publishResults(CharSequence constraint, FilterResults results) {
-                    if (results != null && results.count > 0) {
-                        notifyDataSetChanged();
-                    }
-                    else {
-                        notifyDataSetInvalidated();
-                    }
-                }
-            };
-            return filter;
-        }
-    }
-
-    // Return ArrayList of potential location matches to input string
-    private ArrayList<String> autocomplete(String input) {
-        ArrayList<String> resultList = null;
-
-        HttpURLConnection conn = null;
-        StringBuilder jsonResults = new StringBuilder();
-        try {
-            StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
-            sb.append("?key=" + API_KEY);
-            sb.append("&input=" + URLEncoder.encode(input, "utf8"));
-
-            URL url = new URL(sb.toString());
-            conn = (HttpURLConnection) url.openConnection();
-            InputStreamReader in = new InputStreamReader(conn.getInputStream());
-
-            // Load the results into a StringBuilder
-            int read;
-            char[] buff = new char[1024];
-            while ((read = in.read(buff)) != -1) {
-                jsonResults.append(buff, 0, read);
-            }
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "Error processing Places API URL", e);
-            return resultList;
-        } catch (IOException e) {
-            Log.e(TAG, "Error connecting to Places API", e);
-            return resultList;
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
-        }
-
-        try {
-            // Create a JSON object hierarchy from the results
-            JSONObject jsonObj = new JSONObject(jsonResults.toString());
-            JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
-
-            // Extract the Place descriptions from the results
-            resultList = new ArrayList<String>(predsJsonArray.length());
-            for (int i = 0; i < predsJsonArray.length(); i++) {
-                resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, "Cannot process JSON results", e);
-        }
-
-        return resultList;
     }
 }
