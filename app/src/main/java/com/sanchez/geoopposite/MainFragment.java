@@ -6,15 +6,21 @@ Summer 2014
  */
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MainFragment extends Fragment implements HemisphereDialogFragment.SuperListener{
 
@@ -23,12 +29,20 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
     private Button currentLocationButton;
     private Button otherLocationButton;
 
+    private LocationManager locationManager;
+    private String provider;
+    private Location location;
+
     public MainFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Get the location manager
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
     }
 
     @Override
@@ -40,6 +54,8 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
         currentLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getActivity(), getResources().getString(R.string.fetching_data),
+                        Toast.LENGTH_SHORT).show();
                 new LaunchMapTask().execute();
                 currentLocationButton.setEnabled(false);
             }
@@ -58,8 +74,6 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
     }
 
     private void launchHemisphereDialog(double[] args) {
-        Toast.makeText(getActivity(), getResources().getString(R.string.fetching_data), Toast.LENGTH_SHORT).show();
-
         HemisphereDialogFragment dialogFragment = HemisphereDialogFragment.newInstance(this, args);
         dialogFragment.show(getFragmentManager(), "dialog_get_hemisphere");
     }
@@ -72,19 +86,26 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
         startActivity(i);
     }
 
-    private class LaunchMapTask extends AsyncTask<Void, Void, Void> {
+    private class LaunchMapTask extends AsyncTask<Void, Void, ArrayList<Double>> {
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            // TODO Get device location
-            return null;
+        protected ArrayList<Double> doInBackground(Void... voids) {
+            ArrayList<Double> coords = new ArrayList<>();
+
+            location = locationManager.getLastKnownLocation(provider);
+            if(location != null) {
+                coords.add(location.getLatitude());
+                coords.add(location.getLongitude());
+            } else {
+                Toast.makeText(getActivity(), "Location unavailable", Toast.LENGTH_SHORT).show();
+            }
+
+            return coords;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-            //Testing
-            launchHemisphereDialog(new double[] { 0.0, 0.0});
-            // TODO Launch map
+        protected void onPostExecute(ArrayList<Double> result) {
+            launchHemisphereDialog(new double[] { result.get(0), result.get(1)});
         }
     }
 }
