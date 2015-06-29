@@ -14,6 +14,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        getActionBar().setTitle(R.string.antipodal_point);
 
         // grab values passed from MainFragment
         coords = getIntent().getDoubleArrayExtra(EXTRA_COORDINATES);

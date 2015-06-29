@@ -10,6 +10,7 @@
     <string name="pick">Pick a location:</string>
     <string name="title_activity_other_location">OtherLocationActivity</string>
     <string name="other_location_title">Please enter alternate location</string>
+    <string name="antipodal_point">Here is the other side of the Earth</string>
     <string name="city_or_state">City or State</string>
     <string name="same_hemisphere">Stay in same hemisphere?</string>
     <string name="or">OR</string>
