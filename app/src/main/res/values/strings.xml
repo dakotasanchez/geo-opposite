@@ -31,4 +31,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Action description strings -->
+    <string name="action_description">What is this app?</string>
+    <string name="description_dialog_title">What is this app?</string>
+    <string name="description_dialog_body">"In geography, the <b>antipodes</b> of any place on Earth is the point on the Earth\'s surface which is diametrically opposite to it." -Wikipedia\nThis app shows you the antipodes of the location you enter. Often this just leads to a point in an ocean, so I give the option to stay in the same hemisphere when locating.</string>
+
 </resources>
