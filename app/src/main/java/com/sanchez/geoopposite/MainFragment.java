@@ -10,10 +10,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.location.Location;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,10 +54,10 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
         currentLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                currentLocationButton.setEnabled(false);
                 Toast.makeText(getActivity(), getResources().getString(R.string.fetching_data),
                         Toast.LENGTH_SHORT).show();
                 new LaunchMapTask().execute();
-                currentLocationButton.setEnabled(false);
             }
         });
 
@@ -65,12 +65,20 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
         otherLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                otherLocationButton.setEnabled(false);
                 Intent i = new Intent(getActivity(), OtherLocationActivity.class);
                 startActivity(i);
             }
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        currentLocationButton.setEnabled(true);
+        otherLocationButton.setEnabled(true);
     }
 
     private void launchHemisphereDialog(double[] args) {
@@ -105,7 +113,12 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
 
         @Override
         protected void onPostExecute(ArrayList<Double> result) {
-            launchHemisphereDialog(new double[] { result.get(0), result.get(1)});
+            if(result != null) {
+                Log.i(TAG, "Before reversal: " + result.get(0) + " " + result.get(1));
+                launchHemisphereDialog(Utils.getOppositeCoordinates(result.get(0), result.get(1)));
+            } else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.invalid_input), Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
