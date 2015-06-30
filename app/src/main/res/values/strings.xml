@@ -29,8 +29,7 @@
     <string name="invalid_input">Invalid input location</string>
     <string name="fetching_data">Fetching location data...</string>
     <string name="title_activity_map">MapActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="geocoder_error">Error contacting location service.\nTry again later.</string>
 
     <!-- Action description strings -->
     <string name="action_description">What is this app?</string>

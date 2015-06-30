@@ -74,8 +74,7 @@ public class OtherLocationFragment extends Fragment implements
         Log.e(TAG, "Google Places API connection failed with error code: "
                 + connectionResult.getErrorCode());
 
-        // TODO: Check error code and provide solution
-        Toast.makeText(getActivity(), "Google Places API connection failed with error code:" +
+        Toast.makeText(getActivity(), "Google Places API unavailable right now. Error code:" +
                         connectionResult.getErrorCode(), Toast.LENGTH_LONG).show();
     }
 
@@ -218,7 +217,6 @@ public class OtherLocationFragment extends Fragment implements
         }
     }
 
-    // TODO Handle timeout or Geocoder service unavailable...
     private class GetCoordinatesFromLocation extends AsyncTask<String, Void, ArrayList<Double>> {
 
         @Override
@@ -232,11 +230,13 @@ public class OtherLocationFragment extends Fragment implements
                     returnList.add(address.getLatitude());
                     returnList.add(address.getLongitude());
                     return returnList;
+                } else {
+                    return null;
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
+                Toast.makeText(getActivity(), getResources().getString(R.string.geocoder_error), Toast.LENGTH_LONG).show();
             }
-
             return null;
         }
 

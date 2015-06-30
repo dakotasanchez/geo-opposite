@@ -54,7 +54,6 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
         currentLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentLocationButton.setEnabled(false);
                 Toast.makeText(getActivity(), getResources().getString(R.string.fetching_data),
                         Toast.LENGTH_SHORT).show();
                 new LaunchMapTask().execute();
@@ -65,20 +64,12 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
         otherLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                otherLocationButton.setEnabled(false);
                 Intent i = new Intent(getActivity(), OtherLocationActivity.class);
                 startActivity(i);
             }
         });
 
         return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        currentLocationButton.setEnabled(true);
-        otherLocationButton.setEnabled(true);
     }
 
     private void launchHemisphereDialog(double[] args) {
