@@ -31,7 +31,7 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
 
     private LocationManager locationManager;
     private String provider;
-    private Location location;
+    private Location location = null;
 
     public MainFragment() {
     }
@@ -91,7 +91,11 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
         protected ArrayList<Double> doInBackground(Void... voids) {
             ArrayList<Double> coords = new ArrayList<>();
 
-            location = locationManager.getLastKnownLocation(provider);
+            try {
+                location = locationManager.getLastKnownLocation(provider);
+            } catch (SecurityException e) {
+                // do nothing, we'll toast soon
+            }
             if(location != null) {
                 coords.add(location.getLatitude());
                 coords.add(location.getLongitude());
