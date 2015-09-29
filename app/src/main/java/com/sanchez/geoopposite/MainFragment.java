@@ -26,9 +26,6 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
 
     private static final String TAG = MainFragment.class.getSimpleName();
 
-    private Button currentLocationButton;
-    private Button otherLocationButton;
-
     private LocationManager locationManager;
     private String provider;
     private Location location = null;
@@ -50,7 +47,7 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        currentLocationButton = (Button)rootView.findViewById(R.id.current_location_button);
+        Button currentLocationButton = (Button)rootView.findViewById(R.id.current_location_button);
         currentLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,7 +57,7 @@ public class MainFragment extends Fragment implements HemisphereDialogFragment.S
             }
         });
 
-        otherLocationButton = (Button)rootView.findViewById(R.id.other_location_button);
+        Button otherLocationButton = (Button)rootView.findViewById(R.id.other_location_button);
         otherLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
